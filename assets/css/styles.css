@@ -795,13 +795,24 @@ a:focus-visible, button:focus-visible, .chip:focus-visible {
 }
 .rating__label { font-size: 14.5px; font-weight: 600; margin-bottom: 10px; }
 .rating__scale { display: flex; gap: 6px; }
+/* Each step is tinted along a red -> green proficiency gradient (SETU
+   secondary palette: Sunset Red -> Sunrise Yellow -> Grass Green) so the
+   scale reads at a glance, from "low confidence" to "high confidence". */
+.rating__scale button:nth-child(1) { --step: var(--sunset-red); }
+.rating__scale button:nth-child(2) { --step: color-mix(in srgb, var(--sunset-red), var(--sunrise-yellow)); }
+.rating__scale button:nth-child(3) { --step: var(--sunrise-yellow); }
+.rating__scale button:nth-child(4) { --step: color-mix(in srgb, var(--sunrise-yellow), var(--grass-green)); }
+.rating__scale button:nth-child(5) { --step: var(--grass-green); }
 .rating__scale button {
   flex: 1; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
-  padding: 8px 0; border-radius: 8px; border: 1px solid var(--border);
-  background: var(--surface-2); color: var(--text-soft); transition: all .12s ease;
+  padding: 8px 0; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--step) 30%, var(--border));
+  background: color-mix(in srgb, var(--step) 16%, var(--surface-2)); color: var(--text-soft); transition: all .12s ease;
 }
-.rating__scale button:hover { border-color: var(--accent); }
+.rating__scale button:hover { border-color: var(--step); }
 .rating__scale button[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+@media (prefers-color-scheme: dark) {
+  .rating__scale button { background: color-mix(in srgb, var(--step) 24%, var(--surface-2)); border-color: color-mix(in srgb, var(--step) 45%, var(--border)); }
+}
 .rating__compare { font-size: 13px; color: var(--accent); margin-top: 8px; font-weight: 600; }
 .rating__compare[hidden] { display: none; }
 .rating__hint { font-size: 12.5px; color: var(--text-mute); }
